@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
+import com.audiobooks.podcasts.ui.theme.favouriteButtonColor
 
 @Composable
 fun PodcastDetailsScreen(
@@ -106,7 +107,7 @@ fun PodcastDetailsScreen(
                 .padding(top = 26.dp),
             contentPadding = PaddingValues(horizontal = 28.dp, vertical = 16.dp),
             onClick = { isFavourited = !isFavourited },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.favourite_button_color)),
+            colors = ButtonDefaults.buttonColors(containerColor = favouriteButtonColor),
             shape = RoundedCornerShape(12.dp),
         ) {
             Text(
