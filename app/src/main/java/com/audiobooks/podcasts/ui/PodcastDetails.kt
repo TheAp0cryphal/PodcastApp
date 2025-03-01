@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -73,9 +74,7 @@ fun PodcastDetailsScreen(
                 .padding(top = 24.dp)
                 .padding(horizontal = 32.dp),
             text = podcast.title,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 22.sp,
+            style = MaterialTheme.typography.headlineMedium,
         )
 
         //Publisher
@@ -84,9 +83,8 @@ fun PodcastDetailsScreen(
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(top = 4.dp),
             text = podcast.publisher,
-            textAlign = TextAlign.Center,
             color = Color.Gray,
-            fontStyle = FontStyle.Italic
+            style = MaterialTheme.typography.labelSmall
         )
 
         //Image
@@ -113,8 +111,8 @@ fun PodcastDetailsScreen(
         ) {
             Text(
                 text = if (isFavourited) stringResource(R.string.Favourited) else stringResource(R.string.Favourite),
-                fontSize = 16.sp,
-                color = Color.White,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
         }
 

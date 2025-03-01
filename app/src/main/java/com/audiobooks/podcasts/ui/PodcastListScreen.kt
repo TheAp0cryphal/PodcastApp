@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
@@ -51,7 +50,6 @@ fun PodcastListScreen(
         podcasts = podcasts,
         onShowDetails = onShowDetails
     )
-
 }
 
 @Composable
@@ -63,11 +61,10 @@ private fun PodcastListUI(
     Column(
         modifier = Modifier.padding(24.dp)
     ) {
+        // "Podcasts"
         Text(
-            modifier = Modifier.padding(vertical = 15.dp),
             text = stringResource(R.string.Podcasts),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.headlineLarge
         )
 
         // Recycler View in Compose
