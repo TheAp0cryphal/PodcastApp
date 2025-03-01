@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.audiobooks.podcasts.model.Podcast
 import com.audiobooks.podcasts.network.PodcastRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PodcastListViewModel : ViewModel() {
@@ -16,7 +17,8 @@ class PodcastListViewModel : ViewModel() {
         private set
 
     fun fetchPodcastFromAPI() {
-        viewModelScope.launch {
+        // Launching a new coroutine to fetch podcasts on the IO thread to avoid blocking the main thread
+        viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getPodcasts()
 
             result.fold(
@@ -28,7 +30,6 @@ class PodcastListViewModel : ViewModel() {
                     println("Failed to fetch podcasts: ${error.message}")
                 }
             )
-
         }
     }
 }

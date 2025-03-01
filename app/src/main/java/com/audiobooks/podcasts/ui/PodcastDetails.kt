@@ -17,10 +17,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +46,7 @@ fun PodcastDetailsScreen(
             .fillMaxSize()
             .fillMaxWidth()
     ) {
+        //Back Button
         Button(
             onClick = { onBack() }, // Callback to navigate back provided by MainActivity
             modifier = Modifier.align(Alignment.Start),
@@ -60,24 +66,30 @@ fun PodcastDetailsScreen(
             )
         }
 
+        //Title
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .padding(top = 24.dp),
+                .padding(top = 24.dp)
+                .padding(horizontal = 32.dp),
             text = podcast.title,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 22.sp,
         )
 
+        //Publisher
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(top = 4.dp),
             text = podcast.publisher,
+            textAlign = TextAlign.Center,
             color = Color.Gray,
             fontStyle = FontStyle.Italic
         )
 
+        //Image
         Image(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
@@ -88,37 +100,38 @@ fun PodcastDetailsScreen(
             contentDescription = "Podcast Image",
         )
 
-
+        //Favourite Button
+        var isFavourited by remember { mutableStateOf(false) }
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 26.dp),
             contentPadding = PaddingValues(horizontal = 28.dp, vertical = 16.dp),
-            onClick = { /* TODO */ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF0050)), // Custom Pink/Red
-            shape = RoundedCornerShape(12.dp), // Rounded corners
+            onClick = { isFavourited = !isFavourited },
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.favourite_button_color)),
+            shape = RoundedCornerShape(12.dp),
         ) {
             Text(
-                text = stringResource(R.string.Favourite),
+                text = if (isFavourited) stringResource(R.string.Favourited) else stringResource(R.string.Favourite),
                 fontSize = 16.sp,
-                color = Color.White, // White text
+                color = Color.White,
             )
         }
 
+        //Description
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(32.dp),
             text = stripHtml(podcast.description),
             textAlign = TextAlign.Center,
-            lineHeight = 14.sp,
+            color = Color.Gray,
             fontSize = 12.sp,
-            color = Color.Gray
+            lineHeight = 12.sp,
         )
-
     }
 }
 
-fun stripHtml(html: String): String {
+private fun stripHtml(html: String): String {
     return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
 }

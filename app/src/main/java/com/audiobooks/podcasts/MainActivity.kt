@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                         val route = backStackEntry.toRoute<PodcastDetails>()
                         PodcastDetailsScreen(
                             route.podcast,
-                            onBack = { navController.popBackStack() }
+                            onBack = { navController.popBackStack() } // Pass a callback for navController to navigate back
                         )
                     }
                 }
