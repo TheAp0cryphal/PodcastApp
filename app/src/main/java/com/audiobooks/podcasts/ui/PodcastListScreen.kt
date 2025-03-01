@@ -1,22 +1,53 @@
 package com.audiobooks.podcasts.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
+import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
-import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 
 @Composable
-fun PodcastListScreen(onShowDetails: (podcast: Podcast) -> Unit) {
-    // TODO - Implement the ViewModel to fetch the list of podcasts and update the UI
-    // TODO - Modify this file as needed
-    // TODO - Coil dependency was added as the image loader for the podcast image - feel free to use any other image loader
-    val viewModel: PodcastListViewModel = viewModel()
+fun PodcastListScreen(
+    viewModel: PodcastListViewModel = viewModel(),
+    onShowDetails: (podcast: Podcast) -> Unit) {
+
+    // Trigger fetching podcasts when the Composable is first launched
+    LaunchedEffect(Unit) {
+        viewModel.fetchPodcastFromAPI()
+    }
+
+    // Observe the list of podcasts and update the UI when it changes
+    val podcasts by remember { derivedStateOf { viewModel.podcasts } }
 
     PodcastListUI(
+        podcasts = podcasts,
         onShowDetails = onShowDetails
     )
 
@@ -24,36 +55,75 @@ fun PodcastListScreen(onShowDetails: (podcast: Podcast) -> Unit) {
 
 @Composable
 private fun PodcastListUI(
+    podcasts: List<Podcast>,
     onShowDetails: (podcast: Podcast) -> Unit
 ) {
-    // TODO - Example UI layout - Modify to implement the requested UI
-    Column {
-        Text("Podcast List Screen")
-        Button(
-            onClick = {
-                onShowDetails(
-                    // Example data
-                    Podcast(
-                        title = "Example Podcast Title",
-                        description="The Ed Mylett Show showcases the greatest peak-performers across all industries in one place",
-                        id="abc",
-                        image="https://cdn-images-3.listennotes.com/podcasts/the-ed-mylett-show-ed-mylett-cumulus-guxpvEVnHTJ-PEUIT9RBhZD.1400x1400.jpg",
-                        publisher="Podcast Publisher"
-                    )
+    // Column is a layout composable that places its children in a vertical sequence
+    Column(
+        modifier = Modifier.padding(24.dp)
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 15.dp),
+            text = stringResource(R.string.Podcasts),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        // Recycler View in Compose
+        LazyColumn(
+            modifier = Modifier.weight(1f) // Ensures it takes available space
+        ) {
+            items(podcasts) { podcast ->
+                PodcastCard(
+                    podcast = podcast,
+                    onClick = { onShowDetails(podcast) }
                 )
             }
-        ) {
-            Text("Show Details")
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-private fun PodcastListUIPreview() {
-    PodcastsTheme {
-        PodcastListUI(
-            onShowDetails = {}
-        )
+fun PodcastCard(
+    podcast: Podcast,
+    onClick: (Podcast) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(podcast.image), // Load image from URL
+                contentDescription = "Podcast Image",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column {
+                Text(
+                    text = podcast.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = podcast.publisher,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
+        }
     }
 }
