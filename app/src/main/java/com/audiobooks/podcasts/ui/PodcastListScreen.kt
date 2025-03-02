@@ -77,6 +77,7 @@ private fun PodcastListUI(
     ) {
         // "Podcasts"
         Text(
+            modifier = Modifier.padding(vertical = 10.dp),
             text = stringResource(R.string.Podcasts),
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
