@@ -72,7 +72,7 @@ private fun PodcastListUI(
     // Column is a layout composable that places its children in a vertical sequence
     Column(
         modifier = Modifier
-            .padding(24.dp)
+            .padding(20.dp)
             .fillMaxSize()
     ) {
         // "Podcasts"
@@ -82,7 +82,6 @@ private fun PodcastListUI(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
         // Recycler View in Compose
         LazyColumn(
             modifier = Modifier
@@ -114,7 +113,7 @@ fun PodcastCard(
     podcast: Podcast,
     onClick: (Podcast) -> Unit
 ) {
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(4.dp))
 
     Card(
         modifier = Modifier

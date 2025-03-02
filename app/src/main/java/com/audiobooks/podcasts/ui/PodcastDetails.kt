@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -55,6 +54,8 @@ fun PodcastDetailsScreen(
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
+        Spacer(modifier = Modifier.height(12.dp))
+
         //Back Button
         Button(
             onClick = {
@@ -66,7 +67,8 @@ fun PodcastDetailsScreen(
             },
             modifier = Modifier
                 .align(Alignment.Start)
-                .padding(horizontal = 5.dp),
+                .padding(horizontal = 4.dp),
+            contentPadding = PaddingValues(horizontal = 10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
         ) {
 
@@ -83,6 +85,7 @@ fun PodcastDetailsScreen(
             Text(
                 stringResource(R.string.Back),
                 color = Color.Black,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )
         }
