@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,7 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
 
-const val debounceInterval = 500L // Debounce interval in milliseconds
+const val debounceInterval = 1000L // Debounce interval in milliseconds, I chose this number because it prevent click during fade animation
 
 @Composable
 fun PodcastListScreen(
@@ -70,7 +71,9 @@ private fun PodcastListUI(
 
     // Column is a layout composable that places its children in a vertical sequence
     Column(
-        modifier = Modifier.padding(24.dp)
+        modifier = Modifier
+            .padding(24.dp)
+            .fillMaxSize()
     ) {
         // "Podcasts"
         Text(
