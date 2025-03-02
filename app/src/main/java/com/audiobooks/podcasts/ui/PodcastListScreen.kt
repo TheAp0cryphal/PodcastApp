@@ -4,6 +4,7 @@ import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,7 +82,10 @@ private fun PodcastListUI(
         Spacer(modifier = Modifier.height(12.dp))
         // Recycler View in Compose
         LazyColumn(
-            modifier = Modifier.weight(1f) // Ensures it takes available space
+            modifier = Modifier
+                .weight(1f) // Ensures it takes available space
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(vertical = 16.dp), // Padding around the list, so it doesn't truncate at the bottom
         ) {
             items(podcasts) { podcast ->
                 PodcastCard(
@@ -144,7 +148,9 @@ fun PodcastCard(
                     letterSpacing = 0.01.sp,
                     lineHeight = 18.sp
                 )
+
                 Spacer(modifier = Modifier.height(2.dp))
+
                 Text(
                     text = podcast.publisher,
                     style = MaterialTheme.typography.bodyMedium,
