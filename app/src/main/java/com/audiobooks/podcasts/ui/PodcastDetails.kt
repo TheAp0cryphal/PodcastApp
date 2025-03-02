@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,10 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
@@ -71,9 +72,11 @@ fun PodcastDetailsScreen(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(top = 24.dp)
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 26.dp), // Padding from left and right to prevent text from sticking to the edges
             text = podcast.title,
-            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
         )
 
         //Publisher
@@ -83,14 +86,16 @@ fun PodcastDetailsScreen(
                 .padding(top = 4.dp),
             text = podcast.publisher,
             color = Color.Gray,
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.bodyLarge,
+            fontStyle = FontStyle.Italic
         )
+
+        Spacer(modifier = Modifier.height(22.dp))
 
         //Image
         Image(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .padding(top = 32.dp)
                 .size(250.dp)
                 .clip(RoundedCornerShape(16.dp)),
             painter = rememberAsyncImagePainter(podcast.image),
@@ -111,6 +116,7 @@ fun PodcastDetailsScreen(
             Text(
                 text = if (isFavourited) stringResource(R.string.Favourited) else stringResource(R.string.Favourite),
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
                 color = Color.White
             )
         }
@@ -122,9 +128,8 @@ fun PodcastDetailsScreen(
                 .padding(32.dp),
             text = stripHtml(podcast.description),
             textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodySmall,
             color = Color.Gray,
-            fontSize = 12.sp,
-            lineHeight = 12.sp,
         )
     }
 }
