@@ -26,6 +26,8 @@ object Dimensions {
     val backIconSize = 25.dp
     val podcastDetailsIconSize = 250.dp
 
+    val touchTargetSize = 96.dp
+
     val favoriteButtonHorizontalPadding = 28.dp
     val favoriteButtonVerticalPadding = 16.dp
 }
