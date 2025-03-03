@@ -14,7 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -31,15 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
+import com.audiobooks.podcasts.ui.theme.Dimensions
 import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 import com.audiobooks.podcasts.ui.theme.favouriteButtonColor
 
@@ -64,7 +60,7 @@ fun PodcastDetailsScreen(
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(Dimensions.spacingMedium))
 
         //Back Button
         Button(
@@ -77,79 +73,78 @@ fun PodcastDetailsScreen(
             },
             modifier = Modifier
                 .align(Alignment.Start)
-                .padding(horizontal = 4.dp),
-            contentPadding = PaddingValues(horizontal = 10.dp),
+                .padding(horizontal = Dimensions.paddingExtraSmall),
+            contentPadding = PaddingValues(horizontal = Dimensions.paddingMedium),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
         ) {
 
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = stringResource(R.string.back),
                 tint = Color.Black,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(Dimensions.backIconSize)
             )
 
-            Spacer(modifier = Modifier.size(4.dp))
+            Spacer(modifier = Modifier.size(Dimensions.spacingSmall))
 
             Text(
                 stringResource(R.string.back),
-                color = Color.Black,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.bodyLarge
             )
         }
 
+        Spacer(modifier = Modifier.height(Dimensions.spacingExtraLarge))
+
+        //Title
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .padding(top = 24.dp)
-                .padding(horizontal = 26.dp), // Padding from left and right to prevent text from sticking to the edges
+                .padding(horizontal = Dimensions.paddingExtraLarge), // Padding from left and right to prevent text from sticking to the edges
             text = podcast.title,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.headlineSmall
         )
+
+        Spacer(modifier = Modifier.height(Dimensions.spacingSmall))
 
         //Publisher
         Text(
             modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .padding(top = 4.dp),
+                .align(alignment = Alignment.CenterHorizontally),
             text = podcast.publisher,
-            color = Color.Gray,
-            style = MaterialTheme.typography.bodyLarge,
-            fontStyle = FontStyle.Italic
+            style = MaterialTheme.typography.bodyMedium
         )
 
-        Spacer(modifier = Modifier.height(22.dp))
+        Spacer(modifier = Modifier.height(Dimensions.spacingExtraLarge))
 
         //Image
         Image(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .size(250.dp)
-                .clip(RoundedCornerShape(16.dp)),
+                .size(Dimensions.podcastDetailsIconSize)
+                .clip(RoundedCornerShape(Dimensions.cornerRadiusExtraLarge)),
             painter = rememberAsyncImagePainter(podcast.image),
             contentDescription = "Podcast Image",
         )
+
+        Spacer(modifier = Modifier.height(Dimensions.spacingExtraLarge))
 
         //Favourite Button
         var isFavourited by rememberSaveable { mutableStateOf(false) }
         Button(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 26.dp),
-            contentPadding = PaddingValues(horizontal = 28.dp, vertical = 16.dp),
+                .align(Alignment.CenterHorizontally),
+            contentPadding = PaddingValues(
+                horizontal = Dimensions.favoriteButtonHorizontalPadding,
+                vertical = Dimensions.favoriteButtonVerticalPadding
+            ),
             onClick = { isFavourited = !isFavourited },
             colors = ButtonDefaults.buttonColors(containerColor = favouriteButtonColor),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(Dimensions.cornerRadiusLarge),
         ) {
             Text(
                 text = if (isFavourited) stringResource(R.string.favourited) else stringResource(R.string.favourite),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
+                style = MaterialTheme.typography.titleMedium
             )
         }
 
@@ -157,12 +152,9 @@ fun PodcastDetailsScreen(
         Text(
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
-                .padding(32.dp),
+                .padding(Dimensions.paddingXXLarge),
             text = stripHtml(podcast.description),
-            textAlign = TextAlign.Center,
-            lineHeight = 14.sp,
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.Gray,
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -171,7 +163,6 @@ fun PodcastDetailsScreen(
 private fun stripHtml(html: String): String {
     return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
 }
-
 
 @Preview(showBackground = true)
 @Composable

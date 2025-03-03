@@ -33,15 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
+import com.audiobooks.podcasts.ui.theme.Dimensions
 import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 
 /**
@@ -91,15 +88,14 @@ private fun PodcastListUI(
     // Column is a layout composable that places its children in a vertical sequence
     Column(
         modifier = Modifier
-            .padding(20.dp)
+            .padding(Dimensions.paddingLarge)
             .fillMaxSize()
     ) {
         // "Podcasts"
         Text(
-            modifier = Modifier.padding(vertical = 10.dp),
+            modifier = Modifier.padding(vertical = Dimensions.paddingMedium),
             text = stringResource(R.string.podcasts),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.headlineLarge
         )
 
         Box(
@@ -112,7 +108,7 @@ private fun PodcastListUI(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(vertical = 16.dp)
+                    contentPadding = PaddingValues(vertical = Dimensions.paddingLarge)
                 ) {
                     items(podcasts) { podcast ->
                         PodcastCard(
@@ -137,19 +133,19 @@ fun PodcastCard(
     podcast: Podcast,
     onClick: (Podcast) -> Unit
 ) {
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(Dimensions.spacingSmall))
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick (podcast) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimensions.cardElevation),
+        shape = RoundedCornerShape(size = Dimensions.cornerRadiusMedium),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(Dimensions.paddingSmall)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -157,31 +153,27 @@ fun PodcastCard(
                 painter = rememberAsyncImagePainter(podcast.image), // Load image from URL
                 contentDescription = "Podcast Image",
                 modifier = Modifier
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(Dimensions.listIconSize)
+                    .clip(RoundedCornerShape(Dimensions.cornerRadiusMedium))
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(Dimensions.spacingLarge))
 
+            // Title and Publisher
             Column(modifier = Modifier
                 .align(Alignment.Top)
-                .padding(top = 12.dp)
+                .padding(top = Dimensions.paddingMedium)
             ) {
                 Text(
                     text = podcast.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 0.01.sp,
-                    lineHeight = 18.sp
+                    style = MaterialTheme.typography.titleSmall
                 )
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(Dimensions.spacingExtraSmall))
 
                 Text(
                     text = podcast.publisher,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontStyle = FontStyle.Italic,
-                    color = Color.Gray
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
