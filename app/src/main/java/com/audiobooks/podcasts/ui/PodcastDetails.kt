@@ -83,7 +83,7 @@ fun PodcastDetailsScreen(
             Spacer(modifier = Modifier.size(4.dp))
 
             Text(
-                stringResource(R.string.Back),
+                stringResource(R.string.back),
                 color = Color.Black,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
@@ -136,7 +136,7 @@ fun PodcastDetailsScreen(
             shape = RoundedCornerShape(12.dp),
         ) {
             Text(
-                text = if (isFavourited) stringResource(R.string.Favourited) else stringResource(R.string.Favourite),
+                text = if (isFavourited) stringResource(R.string.favourited) else stringResource(R.string.favourite),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White

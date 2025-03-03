@@ -1,8 +1,10 @@
 package com.audiobooks.podcasts.ui
 
-import android.widget.Space
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,12 +38,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
+import com.audiobooks.podcasts.ui.theme.PodcastsTheme
+import kotlinx.coroutines.delay
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 const val debounceInterval = 1000L // Debounce interval in milliseconds, I chose this number because it prevent click during fade animation
 
@@ -78,32 +86,36 @@ private fun PodcastListUI(
         // "Podcasts"
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = stringResource(R.string.Podcasts),
+            text = stringResource(R.string.podcasts),
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
 
-        // Recycler View in Compose
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f) // Ensures it takes available space
-                .fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 16.dp), // Padding around the list, so it doesn't truncate at the bottom
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            items(podcasts) { podcast ->
-                PodcastCard(
-                    podcast = podcast,
-                    onClick = {
-                        // We are using a debounce mechanism to prevent list items being tapped simultaneously
-                        // which can lead to multiple navigation events
-                        val currentTime = System.currentTimeMillis()
-                        // Only trigger if enough time has passed since the last click
-                        if (currentTime - lastClickTime > debounceInterval) {
-                            lastClickTime = currentTime
-                            onShowDetails(podcast)
-                        }
+            if (podcasts.isEmpty()) {
+                // Show loading indicator when the list is empty
+                CircularProgressIndicator()
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
+                    items(podcasts) { podcast ->
+                        PodcastCard(
+                            podcast = podcast,
+                            onClick = {
+                                val currentTime = System.currentTimeMillis()
+                                if (currentTime - lastClickTime > debounceInterval) {
+                                    lastClickTime = currentTime
+                                    onShowDetails(podcast)
+                                }
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }
@@ -162,5 +174,26 @@ fun PodcastCard(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PodcastListPreview() {
+    val samplePodcasts = List(6) { index ->
+        Podcast(
+            id = index.toString(),
+            title = "Podcast $index",
+            description = "Description $index",
+            image = "",
+            publisher = "Publisher $index"
+        )
+    }
+
+    PodcastsTheme {
+        PodcastListUI(
+            podcasts = samplePodcasts,
+            onShowDetails = {}
+        )
     }
 }

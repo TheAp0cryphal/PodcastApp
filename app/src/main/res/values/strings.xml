@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Podcasts</string>
-    <string name="Podcasts">Podcasts</string>
-    <string name="Back">Back</string>
-    <string name="Favourite">Favourite</string>
-    <string name="Favourited">Favourited</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="back">Back</string>
+    <string name="favourite">Favourite</string>
+    <string name="favourited">Favourited</string>
+    <string name="no_podcasts">No Podcasts Found :(</string>
 </resources>
