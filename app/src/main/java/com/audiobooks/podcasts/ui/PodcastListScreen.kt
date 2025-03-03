@@ -44,7 +44,23 @@ import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
 import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 
-const val debounceInterval = 1000L // Debounce interval in milliseconds, I chose this number because it prevent click during fade animation
+/**
+ * This file contains the implementation of the PodcastListScreen and related composables.
+ *
+ * The PodcastListScreen composable is responsible for displaying a list of podcasts fetched from an API.
+ * It uses a ViewModel to manage the state and fetch the data.
+ *
+ * The PodcastListUI composable handles the UI layout and displays a loading indicator when the data is being fetched.
+ * It also includes a debounce mechanism to prevent multiple rapid clicks on podcast items.
+ *
+ * The PodcastCard composable displays individual podcast details in a card format.
+ *
+ * A preview function, PodcastListPreview, is provided to render a sample list of podcasts for UI testing.
+ */
+
+// Debounce interval in milliseconds, it's longer than the time it takes to navigate to the details screen
+const val debounceInterval = 1000L
+
 
 @Composable
 fun PodcastListScreen(

@@ -34,12 +34,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
+import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 import com.audiobooks.podcasts.ui.theme.favouriteButtonColor
+
+/**
+ * Composable function to display the details of a podcast.
+ *
+ * @param podcast The podcast object containing details to be displayed.
+ * @param onBack Callback function to handle the back navigation.
+ */
 
 @Composable
 fun PodcastDetailsScreen(
@@ -158,6 +167,27 @@ fun PodcastDetailsScreen(
     }
 }
 
+/* Helper function: Strips HTML tags from the description */
 private fun stripHtml(html: String): String {
     return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PodcastDetailsPreview() {
+    val samplePodcast = Podcast(
+        id = "1",
+        title = "Sample Podcast",
+        description = "This is a sample podcast description.",
+        image = "",
+        publisher = "Sample Publisher"
+    )
+
+    PodcastsTheme {
+        PodcastDetailsScreen(
+            podcast = samplePodcast,
+            onBack = {}
+        )
+    }
 }
