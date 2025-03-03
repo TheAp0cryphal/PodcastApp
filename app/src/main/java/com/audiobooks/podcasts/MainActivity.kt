@@ -21,7 +21,6 @@ import com.audiobooks.podcasts.ui.PodcastListScreen
 import com.audiobooks.podcasts.ui.theme.PodcastsTheme
 import kotlin.reflect.typeOf
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

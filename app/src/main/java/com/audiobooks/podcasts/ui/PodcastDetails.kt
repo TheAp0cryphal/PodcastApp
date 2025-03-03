@@ -45,7 +45,6 @@ import com.audiobooks.podcasts.ui.theme.favouriteButtonColor
  * @param podcast The podcast object containing details to be displayed.
  * @param onBack Callback function to handle the back navigation.
  */
-
 @Composable
 fun PodcastDetailsScreen(
     podcast: Podcast,

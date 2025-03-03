@@ -10,6 +10,10 @@ import com.audiobooks.podcasts.network.PodcastRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for managing the state of the podcast list.
+ * It fetches podcasts from the API and updates the UI state.
+ */
 class PodcastListViewModel : ViewModel() {
     private val repository = PodcastRepository()
 

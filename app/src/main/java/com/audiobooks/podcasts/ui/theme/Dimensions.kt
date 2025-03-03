@@ -18,7 +18,6 @@ object Dimensions {
 
     val cardElevation = 4.dp
 
-    val CornerRadiusSmall = 4.dp
     val cornerRadiusMedium = 8.dp
     val cornerRadiusLarge = 12.dp
     val cornerRadiusExtraLarge = 16.dp
