@@ -1,13 +1,13 @@
 package com.audiobooks.podcasts.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.audiobooks.podcasts.model.Podcast
 import com.audiobooks.podcasts.network.PodcastRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 class PodcastListViewModel : ViewModel() {
     private val repository = PodcastRepository()
 
-    var podcasts by mutableStateOf<List<Podcast>>(emptyList())
-        private set
+    private val _podcasts = MutableStateFlow<List<Podcast>>(emptyList())
+    val podcasts: StateFlow<List<Podcast>> = _podcasts.asStateFlow()
 
     fun fetchPodcastFromAPI() {
         // Launching a new coroutine to fetch podcasts on the IO thread to avoid blocking the main thread
@@ -28,7 +28,7 @@ class PodcastListViewModel : ViewModel() {
             result.fold(
                 onSuccess = { fetchedPodcasts ->
                     println("Fetched podcasts: $podcasts")
-                    podcasts = fetchedPodcasts
+                    _podcasts.value = fetchedPodcasts
                 },
                 onFailure = { error ->
                     println("Failed to fetch podcasts: ${error.message}")

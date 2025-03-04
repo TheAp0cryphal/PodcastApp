@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
@@ -70,7 +70,7 @@ fun PodcastListScreen(
     }
 
     // Observe the list of podcasts and update the UI when it changes
-    val podcasts by remember { derivedStateOf { viewModel.podcasts } }
+    val podcasts by viewModel.podcasts.collectAsStateWithLifecycle()
 
     PodcastListUI(
         podcasts = podcasts,

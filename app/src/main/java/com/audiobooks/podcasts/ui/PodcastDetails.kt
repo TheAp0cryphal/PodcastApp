@@ -2,6 +2,7 @@ package com.audiobooks.podcasts.ui
 
 import android.text.Html
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -30,9 +31,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.audiobooks.podcasts.R
 import com.audiobooks.podcasts.model.Podcast
@@ -58,6 +65,7 @@ fun PodcastDetailsScreen(
         modifier = Modifier
             .fillMaxSize()
             .fillMaxWidth()
+            .verticalScrollbar(scrollState)
             .verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(Dimensions.spacingMedium))
@@ -163,6 +171,34 @@ fun PodcastDetailsScreen(
 /* Helper function: Strips HTML tags from the description */
 private fun stripHtml(html: String): String {
     return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
+}
+
+/*
+    * Custom modifier to add a vertical scrollbar to the screen.
+    * Credits to: https://stackoverflow.com/a/78453760
+*/
+@Composable
+fun Modifier.verticalScrollbar(state: ScrollState, scrollbarWidth: Dp = 6.dp, color: Color = Color.  Gray): Modifier {
+    return this.then(Modifier.drawWithContent {
+        drawContent()
+
+        val viewHeight = state.viewportSize.toFloat()
+        val contentHeight = state.maxValue + viewHeight
+
+        // Calculate the height of the scrollbar based on the ratio of visible to total content height
+        val scrollBarHeight =
+            (viewHeight * (viewHeight / contentHeight)).coerceIn(10.dp.toPx(), viewHeight)
+        val scrollBarYoffset =
+            (state.value.toFloat() / state.maxValue) * (viewHeight - scrollBarHeight)
+
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(size.width - scrollbarWidth.toPx(), scrollBarYoffset),
+            size = Size(scrollbarWidth.toPx(), scrollBarHeight),
+            cornerRadius = CornerRadius(scrollbarWidth.toPx() / 2, scrollbarWidth.toPx() / 2),
+            alpha = 1f //Always visible
+        )
+    })
 }
 
 @Preview(showBackground = true)
